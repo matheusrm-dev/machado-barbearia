@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Machado Barbearia: agende seu horário</title>
+  <meta name="description" content="Agende cabelo, barba ou os dois na Machado Barbearia. Escolha o dia, o horário e confirme em poucos passos.">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="og:title" content="Machado Barbearia: agende seu horário">
+  <meta name="og:description" content="Agende cabelo, barba ou os dois na Machado Barbearia.">
+  <meta name="og:type" content="website">
+  <link rel="icon" href="imagens/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <button type="button" class="btn-icon" id="btn-voltar" hidden aria-label="Voltar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 5 8 12l7 7"/>
+        </svg>
+      </button>
+      <a class="brand" href="#servicos" data-nav="servicos">
+        <img class="brand__logo" src="imagens/logo.svg" width="209" height="197" alt="Machado Barbearia">
+      </a>
+      <span></span>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="view" id="view-servicos" data-view="servicos">
+      <div class="wrap">
+        <h2 class="view__title">Escolha o serviço</h2>
+        <p class="view__lead">Toque no serviço para escolher o dia e o horário.</p>
+        <div class="servicos" id="lista-servicos"></div>
+        <div class="social">
+          <a class="social__link" href="https://www.instagram.com/machado.barbearia01" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Machado Barbearia">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/>
+              <circle cx="12" cy="12" r="4.1" stroke="currentColor" stroke-width="1.6"/>
+              <circle cx="17.2" cy="6.8" r="1.05" fill="currentColor"/>
+            </svg>
+          </a>
+        </div>
+        <p class="creditos">Fotos de referência: Nenad Stojkovic (Wikimedia Commons, CC BY 2.0) e Nick Demou / StockSnap (CC0). Não são fotos da loja.</p>
+      </div>
+    </section>
+
+    <section class="view" id="view-historico" data-view="historico" hidden>
+      <div class="wrap">
+        <h2 class="view__title">Seus horários</h2>
+        <p class="view__lead">Agendamentos salvos neste aparelho.</p>
+        <div class="lista" id="lista-historico"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-perfil" data-view="perfil" hidden>
+      <div class="wrap">
+        <h2 class="view__title">Seus dados</h2>
+        <p class="view__lead">Usamos nome e WhatsApp para preencher a confirmação.</p>
+        <form id="form-perfil" novalidate>
+          <div class="campo" id="perfil-campo-nome">
+            <label for="perfil-nome">Nome</label>
+            <input id="perfil-nome" name="nome" type="text" autocomplete="name" minlength="2" placeholder="Seu nome">
+            <p class="campo__erro">Digite seu nome (pelo menos 2 letras).</p>
+          </div>
+          <div class="campo" id="perfil-campo-whatsapp">
+            <label for="perfil-whatsapp">WhatsApp</label>
+            <input id="perfil-whatsapp" name="whatsapp" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(11) 99999-9999">
+            <p class="campo__erro">Digite um WhatsApp com DDD, com 10 ou 11 números.</p>
+          </div>
+          <button class="btn" type="submit">Salvar</button>
+          <p class="aviso" id="perfil-aviso" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar" aria-label="Navegação principal">
+    <button type="button" class="tabbar__btn is-active" data-nav="servicos" aria-current="page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="5" width="16" height="16" rx="2"/>
+        <path d="M8 3v4M16 3v4M4 10h16"/>
+      </svg>
+      Agendar
+    </button>
+    <button type="button" class="tabbar__btn" data-nav="historico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="8.2"/>
+        <path d="M12 8.2V12l2.8 2.2"/>
+      </svg>
+      Histórico
+    </button>
+    <button type="button" class="tabbar__btn" data-nav="perfil">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="9" r="3.2"/>
+        <path d="M6.2 18.4c1.2-2.4 3.2-3.6 5.8-3.6s4.6 1.2 5.8 3.6"/>
+      </svg>
+      Perfil
+    </button>
+  </nav>
+
+
+  <div class="painel" id="painel-agendar" hidden>
+    <div class="painel__fundo" data-fechar-painel></div>
+    <div class="painel__caixa" role="dialog" aria-modal="true" aria-labelledby="painel-titulo" tabindex="-1">
+      <div class="painel__topo">
+        <button type="button" class="btn-icon" id="painel-voltar" aria-label="Voltar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 5 8 12l7 7"/>
+          </svg>
+        </button>
+        <h2 class="painel__titulo" id="painel-titulo">Escolha o dia</h2>
+        <span class="painel__topo-espaço"></span>
+      </div>
+
+      <div class="painel__passo" id="passo-dias">
+        <div class="painel__foto">
+          <img id="painel-foto" src="imagens/cabelo.jpg" alt="">
+        </div>
+        <div class="servico-barra">
+          <div class="servico-barra__texto">
+            <p class="servico-barra__nome" id="painel-servico-nome">Cabelo</p>
+            <p class="servico-barra__duracao">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="8.2"/>
+                <path d="M12 8.2V12l2.8 2.2"/>
+              </svg>
+              <span id="painel-servico-duracao">30 min</span>
+            </p>
+          </div>
+          <button type="button" class="btn-icon" id="painel-remover" aria-label="Remover serviço">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 7h14"/>
+              <path d="M10 7V5h4v2"/>
+              <path d="M8 7l.8 12h6.4L16 7"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="dias-nav">
+          <button type="button" class="btn-icon dias-nav__seta" id="dias-prev" aria-label="Dias anteriores">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M15 5 8 12l7 7"/>
+            </svg>
+          </button>
+          <div class="dias-grade" id="lista-dias" role="listbox" aria-label="Dias disponíveis"></div>
+          <button type="button" class="btn-icon dias-nav__seta" id="dias-next" aria-label="Próximos dias">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="horarios-bloco" id="bloco-horarios" hidden>
+          <h3 class="horarios-titulo">Escolha o horário</h3>
+          <p class="horarios-legenda">Terça a sexta das 8h às 20h, sábado das 8h às 19h, a cada 30 minutos. Horários riscados já estão ocupados ou já passaram.</p>
+          <div class="grade" id="lista-horarios" role="listbox" aria-label="Horários disponíveis"></div>
+        </div>
+      </div>
+
+      <div class="painel__passo" id="passo-confirmacao" hidden>
+        <p class="view__lead">Confira os dados e preencha seu nome e WhatsApp.</p>
+        <div class="resumo" id="resumo"></div>
+        <form id="form-confirmacao" novalidate>
+          <div class="campo" id="campo-nome">
+            <label for="input-nome">Nome</label>
+            <input id="input-nome" name="nome" type="text" autocomplete="name" required minlength="2" placeholder="Como devemos te chamar">
+            <p class="campo__erro">Digite seu nome (pelo menos 2 letras).</p>
+          </div>
+          <div class="campo" id="campo-whatsapp">
+            <label for="input-whatsapp">WhatsApp</label>
+            <input id="input-whatsapp" name="whatsapp" type="tel" inputmode="numeric" autocomplete="tel" required placeholder="(11) 99999-9999">
+            <p class="campo__erro">Digite um WhatsApp com DDD, com 10 ou 11 números.</p>
+          </div>
+          <button class="btn" type="submit">Confirmar</button>
+        </form>
+      </div>
+
+      <div class="painel__passo" id="passo-sucesso" hidden>
+        <div class="sucesso">
+          <svg class="check" viewBox="0 0 52 52" aria-hidden="true">
+            <circle cx="26" cy="26" r="24"></circle>
+            <path d="M15 27.2 22.4 34.2 37 18.8"></path>
+          </svg>
+          <h2 class="sucesso__titulo">Horário reservado</h2>
+          <p class="sucesso__texto" id="sucesso-texto">Tudo certo. Te esperamos.</p>
+          <button class="btn" type="button" id="btn-ver-historico">Ver no histórico</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal-cancelar" hidden>
+    <div class="modal__backdrop" data-fechar-modal></div>
+    <div class="modal__caixa" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+      <h2 id="modal-titulo">Cancelar este horário?</h2>
+      <p id="modal-texto">Essa ação libera o horário para outra pessoa.</p>
+      <div class="modal__acoes">
+        <button class="btn btn--danger" type="button" id="btn-confirma-cancelar">Cancelar horário</button>
+        <button class="btn btn--ghost" type="button" data-fechar-modal>Manter</button>
+      </div>
+    </div>
+  </div>
+
+  <noscript>
+    <p class="wrap creditos">Este site precisa do JavaScript ligado para marcar um horário.</p>
+  </noscript>
+  <script src="app.js" defer></script>
+</body>
+</html>
